@@ -1,0 +1,14 @@
+{
+	"exclude": ["./node_modules", "./dist"],
+	"compilerOptions": {
+		"checkJs": true,
+		"module": "CommonJS",
+		"outDir": "./dist",
+		"sourceMap": true,
+
+		"target": "ES2020",
+		"strict": true,
+		"resolveJsonModule": true,
+		"skipLibCheck": true
+	}
+}
