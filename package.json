@@ -52,6 +52,9 @@
 		"webpack": "^4.44.1",
 		"webpack-cli": "^3.3.12"
 	},
+	"files": [
+		"dist/*"
+	],
 	"prettier": {
 		"printWidth": 100,
 		"useTabs": true,
