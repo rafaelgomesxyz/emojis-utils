@@ -1,4 +1,3 @@
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack'); // eslint-disable-line
 
@@ -28,7 +27,6 @@ const getWebpackConfig = (env, doMinify) => {
 			libraryTarget: 'umd',
 		},
 		plugins: [
-			new CleanWebpackPlugin(),
 			new CopyWebpackPlugin({
 				patterns: [{ from: './src/emojis-utils.d.ts', to: 'emojis-utils.d.ts' }],
 			}),
