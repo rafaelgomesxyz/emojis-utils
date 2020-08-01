@@ -18,7 +18,7 @@ const getWebpackConfig = (env, doMinify) => {
 	const config = {
 		devtool: env.development ? 'source-map' : false,
 		entry: {
-			[doMinify ? 'emojis-utils.min' : 'emojis-utils']: ['./src/emojis-utils.js'],
+			[doMinify ? 'emojis-utils.min' : 'emojis-utils']: './src/emojis-utils.js',
 		},
 		mode: env.development ? 'development' : 'production',
 		output: {
