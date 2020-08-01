@@ -2,7 +2,7 @@
 // Project: https://gitlab.com/rafaelgssa/emojis-utils
 // Definitions by: Rafael Gomes <rafael.gssa@pm.me> (https://gitlab.com/rafaelgssa>)
 
-export as namespace emojiUtils;
+export as namespace emojisUtils;
 
 export interface Emoji {
 	codes: string[];
@@ -12,6 +12,6 @@ export interface Emoji {
 }
 
 export const emojis: Emoji[];
-export function getEmoji(shortName: string): Emoji | undefined;
-export function getEmojiShortName(emoji: string): string | undefined;
-export function getEmojiEntities(emoji: string): string[];
+export function getEmoji(shortName: string): string | undefined;
+export function getShortName(emoji: string): string | undefined;
+export function getEntities(emoji: string): string[];

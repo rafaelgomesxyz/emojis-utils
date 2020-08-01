@@ -1,4 +1,4 @@
-import emojis from './emojis.json';
+const emojis = require('./emojis.json');
 
 /* globals define */
 
@@ -14,24 +14,25 @@ const umd = (root, factory) => {
 	} else if (typeof module === 'object' && module.exports) {
 		module.exports = factory();
 	} else {
-		root.emojiUtils = factory();
+		root.emojisUtils = factory();
 	}
 };
 
 const factory = () => {
 	/**
 	 * @param {string} shortName
-	 * @returns {import('./emojis-utils').Emoji | undefined}
+	 * @returns {string | undefined}
 	 */
 	const getEmoji = (shortName) => {
-		return emojis.find((emojiToCompare) => emojiToCompare.short_name === shortName);
+		const foundEmoji = emojis.find((emojiToCompare) => emojiToCompare.short_name === shortName);
+		return foundEmoji && foundEmoji.emoji;
 	};
 
 	/**
 	 * @param {string} emoji
 	 * @returns {string | undefined}
 	 */
-	const getEmojiShortName = (emoji) => {
+	const getShortName = (emoji) => {
 		const foundEmoji = emojis.find((emojiToCompare) => emojiToCompare.emoji === emoji);
 		return foundEmoji && foundEmoji.short_name;
 	};
@@ -40,7 +41,7 @@ const factory = () => {
 	 * @param {string} emoji
 	 * @returns {string[]}
 	 */
-	const getEmojiEntities = (emoji) => {
+	const getEntities = (emoji) => {
 		return [...emoji].map((char) => {
 			const codePoint = char.codePointAt(0);
 			return codePoint ? `&#x${codePoint.toString(16)}` : '';
@@ -50,8 +51,8 @@ const factory = () => {
 	return {
 		emojis,
 		getEmoji,
-		getEmojiShortName,
-		getEmojiEntities,
+		getShortName,
+		getEntities,
 	};
 };
 
