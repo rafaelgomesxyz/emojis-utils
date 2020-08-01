@@ -40,7 +40,7 @@ const getUnicodeEmojis = async (url) => {
 	let matches;
 	while ((matches = regExp.exec(responseText)) !== null) {
 		const codes = matches[1].toLowerCase().split('_');
-		const name = capitalizeWords(matches[2].toLowerCase().replace('⊛ ', ''));
+		const name = capitalizeWords(matches[2].toLowerCase().replace('⊛ ', '').replace('’', "'"));
 		const short_name = '';
 		const emoji = getEmoji(codes);
 		emojis.push({ codes, name, short_name, emoji });
@@ -74,7 +74,7 @@ const getJapaneseEmojis = async () => {
 		for (const [i, emoji] of jpEmojisList.entries()) {
 			const codes = getCodes(emoji);
 			const name = capitalizeWords(key.toLowerCase());
-			const short_name = getShortName(`jp_${key}${i > 0 ? `_${i}` : ''}`);
+			const short_name = getShortName(`jp_${key}${i > 0 ? i : ''}`);
 			emojis.push({ codes, name, short_name, emoji });
 		}
 	}
@@ -95,7 +95,7 @@ const getShortNames = async (emojis) => {
 		shortNames = Object.fromEntries(
 			Object.values(responseJson).map((value) => [
 				value.moji,
-				value.shortname.toLowerCase().slice(1, -1),
+				getShortName(value.shortname.slice(1, -1)),
 			])
 		);
 		console.log('Successfully retrieved short names for emojis!');
@@ -161,10 +161,11 @@ const getCodes = (emoji) => {
  * @returns {string}
  */
 const getShortName = (str) => {
-	return str.toLowerCase().replace(
-		/[^\w]/g, // Matches any non-alphanumeric character, except for underscores.
-		'_'
-	);
+	return str
+		.toLowerCase()
+		.replace(/[^\w]/g, '_') // Matches any non-alphanumeric character, except for underscores.
+		.replace(/_{2,}/g, '_') // Matches consecutive underscores.
+		.replace(/^_|_$/g, ''); // Matches underscores at the beginning and at the end of the name.
 };
 
 /**
@@ -173,7 +174,7 @@ const getShortName = (str) => {
  */
 const capitalizeWords = (str) => {
 	return str.replace(
-		/(^|[^a-z0-9])([a-z])/g, // Matches the first character of the word and any other character followed by a non-alphanumeric character.
+		/(^|[^a-z0-9'])([a-z])/g, // Matches the first character of the word and any other character followed by a non-alphanumeric character, except for single quotes.
 		(...matches) => `${matches[1]}${matches[2].toUpperCase()}`
 	);
 };
