@@ -18,11 +18,14 @@ const getWebpackConfig = (env, doMinify) => {
 	const config = {
 		devtool: env.development ? 'source-map' : false,
 		entry: {
-			[doMinify ? 'emoji-utils.min' : 'emoji-utils']: ['./src/emojis-utils.js'],
+			[doMinify ? 'emojis-utils.min' : 'emojis-utils']: ['./src/emojis-utils.js'],
 		},
 		mode: env.development ? 'development' : 'production',
 		output: {
+			globalObject: "typeof self === 'undefined' ? this : self",
 			filename: '[name].js',
+			library: 'emojisUtils',
+			libraryTarget: 'umd',
 		},
 		plugins: [
 			new CleanWebpackPlugin(),
