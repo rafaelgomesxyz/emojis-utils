@@ -5,7 +5,7 @@ const { resolve } = require('path');
 const EMOJIS_PATH = resolve(__dirname, '../src/emojis.json');
 
 /** @type {Record<string, string | undefined>} */
-let emojisShortNames;
+let shortNames;
 
 /**
  * @returns {Promise<void>}
@@ -45,7 +45,7 @@ const getUnicodeEmojis = async (url) => {
 		const emoji = getEmoji(codes);
 		emojis.push({ codes, name, short_name, emoji });
 	}
-	const emojisWithShortNames = await getEmojisShortNames(emojis);
+	const emojisWithShortNames = await getShortNames(emojis);
 	console.log(`Successfully retrieved unicode emojis for ${url}!`);
 	return emojisWithShortNames;
 };
@@ -72,9 +72,9 @@ const getJapaneseEmojis = async () => {
 	const jpEmojis = JSON.parse(jpEmojisStr);
 	for (const [key, jpEmojisList] of Object.entries(jpEmojis)) {
 		for (const [i, emoji] of jpEmojisList.entries()) {
-			const codes = getEmojiCodes(emoji);
+			const codes = getCodes(emoji);
 			const name = capitalizeWords(key.toLowerCase());
-			const short_name = getEmojiShortName(`jp_${key}${i > 0 ? `_${i}` : ''}`);
+			const short_name = getShortName(`jp_${key}${i > 0 ? `_${i}` : ''}`);
 			emojis.push({ codes, name, short_name, emoji });
 		}
 	}
@@ -86,13 +86,13 @@ const getJapaneseEmojis = async () => {
  * @param {import('../src/emojis-utils').Emoji[]} emojis
  * @returns {Promise<import('../src/emojis-utils').Emoji[]>}
  */
-const getEmojisShortNames = async (emojis) => {
-	if (!emojisShortNames) {
+const getShortNames = async (emojis) => {
+	if (!shortNames) {
 		console.log('Retrieving short names for emojis...');
 		const url = 'https://raw.githubusercontent.com/bonusly/gemojione/master/config/index.json';
 		const response = await fetch(url);
 		const responseJson = await response.json();
-		emojisShortNames = Object.fromEntries(
+		shortNames = Object.fromEntries(
 			Object.values(responseJson).map((value) => [
 				value.moji,
 				value.shortname.toLowerCase().slice(1, -1),
@@ -103,7 +103,7 @@ const getEmojisShortNames = async (emojis) => {
 	return emojis.map((emoji) => ({
 		codes: [...emoji.codes],
 		name: emoji.name,
-		short_name: emojisShortNames[emoji.emoji] || getEmojiShortName(emoji.name),
+		short_name: shortNames[emoji.emoji] || getShortName(emoji.name),
 		emoji: emoji.emoji,
 	}));
 };
@@ -120,15 +120,15 @@ const fixDuplicateShortNames = (emojis) => {
 		emoji: emoji.emoji,
 	}));
 	return emojisCopy.map((emoji, i) => {
-		const duplicateEmoji = emojisCopy
+		const duplicate = emojisCopy
 			.slice(i + 1)
 			.find((emojiToCompare) => emojiToCompare.short_name === emoji.short_name);
-		if (duplicateEmoji) {
-			emoji.short_name = getEmojiShortName(emoji.name);
-			if (emoji.short_name === duplicateEmoji.short_name) {
-				duplicateEmoji.short_name = getEmojiShortName(duplicateEmoji.name);
+		if (duplicate) {
+			emoji.short_name = getShortName(emoji.name);
+			if (emoji.short_name === duplicate.short_name) {
+				duplicate.short_name = getShortName(duplicate.name);
 			}
-			if (emoji.short_name === duplicateEmoji.short_name) {
+			if (emoji.short_name === duplicate.short_name) {
 				emoji.short_name = `${emoji.short_name}_1`;
 			}
 		}
@@ -149,7 +149,7 @@ const getEmoji = (codes) => {
  * @param {string} emoji
  * @returns {string[]}
  */
-const getEmojiCodes = (emoji) => {
+const getCodes = (emoji) => {
 	return [...emoji].map((char) => {
 		const codePoint = char.codePointAt(0);
 		return codePoint ? codePoint.toString(16) : '';
@@ -160,7 +160,7 @@ const getEmojiCodes = (emoji) => {
  * @param {string} str
  * @returns {string}
  */
-const getEmojiShortName = (str) => {
+const getShortName = (str) => {
 	return str.toLowerCase().replace(
 		/[^\w]/g, // Matches any non-alphanumeric character, except for underscores.
 		'_'
