@@ -4,7 +4,7 @@ Utilities for emojis.
 
 Contains the full list of Unicode v13.0 emojis available at https://unicode.org/emoji/charts/full-emoji-list.html and https://unicode.org/emoji/charts/full-emoji-modifiers.html, and also the full list of Japanese emojis available at https://www.jemoticons.com, combined in a single list with their respective Unicode codes, name and short name.
 
-The short names for Unicode emojis are retrieved from https://raw.githubusercontent.com/bonusly/gemojione/master/config/index.json (replacing all non-alphanumeric characters with underscores). For Unicode emojis that are not available in that file, and for Japanese emojis, the short names are generated from the names of the emojis. A number is appended to duplicate short names. For more information about how everything is processed, check the [scripts/update-emojis.js](/scripts/update-emojis.js) file.
+The short names for Unicode emojis are retrieved from https://raw.githubusercontent.com/bonusly/gemojione/master/config/index.json (replacing all non-alphanumeric characters with underscores). For Unicode emojis that are not available in that file, and for Japanese emojis, the short names are generated from the names of the emojis. A number is appended to duplicate short names. For more information about how everything is processed, check the [scripts/update-emojis.js](https://gitlab.com/rafaelgssa/emojis-utils/-/blob/main/scripts/update-emojis.js) file.
 
 ---
 
@@ -54,6 +54,8 @@ emojisUtils.getEmoji('smile');
 	emojisUtils.getEmoji('smile');
 </script>
 ```
+
+It is available in the jsDelivr CDN: https://www.jsdelivr.com/package/npm/emojis-utils
 
 ---
 
