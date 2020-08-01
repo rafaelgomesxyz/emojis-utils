@@ -1,0 +1,75 @@
+{
+	"name": "emojis-utils",
+	"version": "1.0.0",
+	"description": "Utilities for emojis.",
+	"main": "dist/emojis-utils.js",
+	"types": "dist/emojis-utils.d.ts",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://gitlab.com/rafaelgssa/emojis-utils.git"
+	},
+	"keywords": [
+		"emojis"
+	],
+	"author": "Rafael Gomes <rafael.gssa@pm.me> (https://gitlab.com/rafaelgssa)",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://gitlab.com/rafaelgssa/emojis-utils/-/issues"
+	},
+	"homepage": "https://gitlab.com/rafaelgssa/emojis-utils",
+	"devDependencies": {
+		"@types/node": "^14.0.27",
+		"@types/webpack": "^4.41.21",
+		"eslint": "^7.6.0",
+		"eslint-config-prettier": "^6.11.0",
+		"eslint-plugin-prettier": "^3.1.4",
+		"husky": "^4.2.5",
+		"lint-staged": "^10.2.11",
+		"node-fetch": "^2.6.0",
+		"prettier": "^2.0.5",
+		"webpack": "^4.44.1",
+		"webpack-cli": "^3.3.12"
+	},
+	"prettier": {
+		"printWidth": 100,
+		"useTabs": true,
+		"singleQuote": true
+	},
+	"eslintConfig": {
+		"parserOptions": {
+			"sourceType": "module"
+		},
+		"env": {
+			"browser": true,
+			"es2020": true,
+			"node": true
+		},
+		"extends": [
+			"eslint:recommended",
+			"plugin:prettier/recommended"
+		],
+		"rules": {
+			"quotes": [
+				"error",
+				"single",
+				{
+					"avoidEscape": true,
+					"allowTemplateLiterals": false
+				}
+			]
+		},
+		"ignorePatterns": [
+			"dist/*"
+		]
+	},
+	"husky": {
+		"pre-commit": "lint-staged"
+	},
+	"lint-staged": {
+		"*.{json,md,yml,yaml}": "prettier --write",
+		"*.js": "eslint --fix --quiet"
+	}
+}
